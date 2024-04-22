@@ -20,7 +20,8 @@ VALUES ('Mika', 'Mikic', 'mika123@gmail.com', '$2a$12$Mn1xmYaoG3YjZ1NsPRwV0eDw5w
 INSERT INTO users (name, surname, email, password, address, phone, role, reported, blocked, deleted, favourite_accommodations, activation_link, activated, activation_expired, activation_timestamp)
 VALUES ('Nikola', 'Nikolic', 'nikola123@gmail.com', '$2a$12$Mn1xmYaoG3YjZ1NsPRwV0eDw5wwGbmkhBSooynq8gldJluzqybXP.', 'Mikina adresa', '3210089', 'GUEST', false, false, false, null, 'activation_link6', true, false, null);
 
-
+INSERT INTO users (name, surname, email, password, address, phone, role, reported, blocked, deleted, favourite_accommodations, activation_link, activated, activation_expired, activation_timestamp)
+VALUES ('Super', 'Admin', 'super123@gmail.com', '$2a$12$Mn1xmYaoG3YjZ1NsPRwV0eDw5wwGbmkhBSooynq8gldJluzqybXP.', 'Super adresa', '3210089', 'SUPER', false, false, false, null, 'activation_link6', true, false, null);
 
 -- Inserting data into Accommodation table
 -- Inserting data into Accommodation table

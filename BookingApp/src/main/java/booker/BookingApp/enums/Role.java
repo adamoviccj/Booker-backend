@@ -1,5 +1,5 @@
 package booker.BookingApp.enums;
 
 public enum Role {
-    GUEST, OWNER, ADMIN
+    GUEST, OWNER, ADMIN, SUPER
 }
