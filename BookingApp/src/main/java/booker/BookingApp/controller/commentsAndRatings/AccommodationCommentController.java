@@ -173,12 +173,14 @@ public class AccommodationCommentController {
     @GetMapping("/hello-guest")
 //    @PreAuthorize("hasAuthority('HELLO_GUEST')")
     public String helloGuest() {
+        System.out.println("Hello guest");
         return "Hello guest";
     }
 
     @GetMapping("/hello-admin")
 //    @PreAuthorize("hasAuthority('HELLO_ADMIN')")
     public String helloAdmin() {
+
         return "Hello admin";
     }
 

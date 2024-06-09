@@ -1,6 +1,6 @@
 package booker.BookingApp.service.implementation;
 
-import booker.BookingApp.model.users.User;
+//import booker.BookingApp.model.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;

@@ -4,6 +4,7 @@ import booker.BookingApp.dto.accommodation.*;
 import booker.BookingApp.enums.AccommodationType;
 import booker.BookingApp.enums.PriceType;
 import booker.BookingApp.model.accommodation.*;
+import booker.BookingApp.service.implementation.AccommodationService;
 import booker.BookingApp.service.interfaces.IAccommodationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,11 @@ import static booker.BookingApp.dto.accommodation.AccommodationViewDTO.makeFromA
 
 @RestController
 @RequestMapping("/api/accommodations")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class AccommodationController {
 
     @Autowired
-    IAccommodationService service;
+    AccommodationService service;
 
     //create an accommodation
     @PostMapping(value ="/create_accommodation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
