@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,8 +35,8 @@ public class AccommodationController {
 
     //create an accommodation
     @PostMapping(value ="/create_accommodation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccommodationViewDTO> insert(@Valid @RequestBody CreateAccommodationDTO accommodation) throws Exception {
-        AccommodationViewDTO dto = service.create(accommodation);
+    public ResponseEntity<AccommodationViewDTO> insert(@Valid @RequestBody CreateAccommodationDTO accommodation, Authentication connectedUser) throws Exception {
+        AccommodationViewDTO dto = service.create(accommodation, connectedUser);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
@@ -55,7 +56,7 @@ public class AccommodationController {
 
     //find accepted accommodations for owner
     @GetMapping(value = "/owner/{ownerId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<AccommodationListingDTO>> findOwnersAcceptedAccommodations(@PathVariable Long ownerId)
+    public ResponseEntity<ArrayList<AccommodationListingDTO>> findOwnersAcceptedAccommodations(@PathVariable String ownerId)
     {
         ArrayList<AccommodationListingDTO> accommodations = service.findOwnersActiveAccommodations(ownerId);
         return new ResponseEntity<>(accommodations, HttpStatus.OK);
@@ -63,7 +64,7 @@ public class AccommodationController {
 
     //find all accommodations for owner
     @GetMapping(value = "/owner/{ownerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<AccommodationListingDTO>> findAllOwnersAccommodations(@PathVariable Long ownerId)
+    public ResponseEntity<ArrayList<AccommodationListingDTO>> findAllOwnersAccommodations(@PathVariable String ownerId)
     {
         ArrayList<AccommodationListingDTO> accommodations = service.findAllOwnersAccommodations(ownerId);
         return new ResponseEntity<>(accommodations, HttpStatus.OK);
@@ -269,7 +270,7 @@ public class AccommodationController {
     }
 
     @GetMapping(value = "/owner/{id}/accommodationNames")
-    public ResponseEntity<ArrayList<AccommodationNameDTO>> getAccommodationNames(@PathVariable Long id) {
+    public ResponseEntity<ArrayList<AccommodationNameDTO>> getAccommodationNames(@PathVariable String id) {
         ArrayList<AccommodationNameDTO> names = service.getAccommodationNames(id);
         return new ResponseEntity<>(names, HttpStatus.OK);
     }

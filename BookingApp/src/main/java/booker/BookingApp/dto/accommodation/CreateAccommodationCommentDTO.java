@@ -13,7 +13,7 @@ public @Data class CreateAccommodationCommentDTO {
     @NotNull
     private Long accommodationId;
     @NotNull
-    private Long guestId;
+    private String guestId;
     @NotEmpty
     private String content;
     @Min(1) @Max(5)
@@ -24,10 +24,10 @@ public @Data class CreateAccommodationCommentDTO {
     }
 
     public CreateAccommodationCommentDTO(AccommodationComment accommodationComment) {
-        this(accommodationComment.getAccommodation().getId(), accommodationComment.getUser().getId(), accommodationComment.getContent(), accommodationComment.getRating());
+        this(accommodationComment.getAccommodation().getId(), accommodationComment.getGuestId(), accommodationComment.getContent(), accommodationComment.getRating());
     }
 
-    public CreateAccommodationCommentDTO(Long accommodationId, Long guestId, String content, double rating) {
+    public CreateAccommodationCommentDTO(Long accommodationId, String guestId, String content, double rating) {
         this.accommodationId = accommodationId;
         this.guestId = guestId;
         this.content = content;

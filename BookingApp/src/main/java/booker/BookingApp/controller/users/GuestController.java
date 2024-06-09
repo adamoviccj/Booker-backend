@@ -4,8 +4,8 @@ import booker.BookingApp.dto.accommodation.AccommodationListingDTO;
 import booker.BookingApp.dto.accommodation.FavouriteAccommodationDTO;
 import booker.BookingApp.dto.users.GuestDTO;
 import booker.BookingApp.dto.users.OwnerDTO;
-import booker.BookingApp.dto.users.UpdateUserDTO;
-import booker.BookingApp.model.users.Guest;
+//import booker.BookingApp.dto.users.UpdateUserDTO;
+//import booker.BookingApp.model.users.Guest;
 import booker.BookingApp.service.implementation.AccommodationService;
 import booker.BookingApp.service.implementation.GuestService;
 import jakarta.validation.Valid;
@@ -59,21 +59,21 @@ public class GuestController {
         return new ResponseEntity<>(guestDTO, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{guestId}")
-    public ResponseEntity<GuestDTO> update(@PathVariable("guestId") Long id, @Valid @RequestBody UpdateUserDTO updateUserDTO) {
-        try{
-            GuestDTO existingGuest = guestService.getGuestById(id);
-            if (existingGuest == null){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            GuestDTO updatedGuest = guestService.update(existingGuest, updateUserDTO);
-            return new ResponseEntity<>(updatedGuest, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PutMapping(value = "/{guestId}")
+//    public ResponseEntity<GuestDTO> update(@PathVariable("guestId") Long id, @Valid @RequestBody UpdateUserDTO updateUserDTO) {
+//        try{
+//            GuestDTO existingGuest = guestService.getGuestById(id);
+//            if (existingGuest == null){
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//            GuestDTO updatedGuest = guestService.update(existingGuest, updateUserDTO);
+//            return new ResponseEntity<>(updatedGuest, HttpStatus.OK);
+//        }
+//        catch (Exception e) {
+//            System.out.println(e);
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PutMapping(value = "/delete/{guestId}")
     public ResponseEntity<Boolean> delete(@PathVariable Long guestId) {
@@ -115,7 +115,7 @@ public class GuestController {
     }
 
     @PutMapping(value = "/favouriteAccommodations/remove/{guestId}/{accommodationId}")
-    public ResponseEntity<Boolean> removeFromFavouriteAccommodations(@PathVariable Long accommodationId, @PathVariable Long guestId) throws Exception {
+    public ResponseEntity<Boolean> removeFromFavouriteAccommodations(@PathVariable Long guestId, @PathVariable String accommodationId) throws Exception {
         boolean added = guestService.removeFromFavouriteAccommodations(guestId, accommodationId);
         return new ResponseEntity<>(added, HttpStatus.OK);
     }

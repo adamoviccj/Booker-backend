@@ -5,8 +5,8 @@ import booker.BookingApp.dto.commentsAndRatings.OwnerRatingDTO;
 import booker.BookingApp.model.accommodation.Accommodation;
 import booker.BookingApp.model.commentsAndRatings.OwnerRating;
 import booker.BookingApp.model.requestsAndReservations.Reservation;
-import booker.BookingApp.model.users.Guest;
-import booker.BookingApp.model.users.Owner;
+//import booker.BookingApp.model.users.Guest;
+//import booker.BookingApp.model.users.Owner;
 import booker.BookingApp.repository.OwnerRatingRepository;
 import booker.BookingApp.repository.ReservationRepository;
 import booker.BookingApp.repository.UserRepository;
@@ -26,8 +26,8 @@ public class OwnerRatingService implements IOwnerRatingService {
     private OwnerRatingRepository ownerRatingRepository;
     @Autowired
     private ReservationRepository reservationRepository;
-    @Autowired
-    private UserRepository userRepository;
+//    @Autowired
+//    private UserRepository userRepository;
     @Override
     public OwnerRating findOne(Long id) {
         return ownerRatingRepository.findById(id).orElse(null);
@@ -49,15 +49,15 @@ public class OwnerRatingService implements IOwnerRatingService {
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
 
-            if (principal instanceof Guest) {
-                Guest user = (Guest) principal;
+//            if (principal instanceof Guest) {
+//                Guest user = (Guest) principal;
 
                 rating.setDeleted(true);
                 ownerRatingRepository.save(rating);
-            } else {
-                // Handle the case where the principal is not an instance of User
-                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
-            }
+//            } else {
+//                // Handle the case where the principal is not an instance of User
+//                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
+//            }
         } else {
             // Handle the case where there is no authentication
             throw new RuntimeException("User not authenticated");
@@ -66,7 +66,7 @@ public class OwnerRatingService implements IOwnerRatingService {
     }
 
     @Override
-    public OwnerRatingDTO create(CreateOwnerRatingDTO createOwnerRatingDTO) {
+    public OwnerRatingDTO create(CreateOwnerRatingDTO createOwnerRatingDTO, Authentication connectedUser) {
         OwnerRating rating = new OwnerRating();
         rating.setRate(createOwnerRatingDTO.getRate());
         rating.setReported(false);
@@ -77,26 +77,26 @@ public class OwnerRatingService implements IOwnerRatingService {
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
 
-            if (principal instanceof Guest) {
-                Guest user = (Guest) principal;
-                List<Reservation> reservations = reservationRepository.findAllForGuest(user.getId(), createOwnerRatingDTO.getOwnerId());
+//            if (principal instanceof Guest) {
+//                Guest user = (Guest) principal;
+                List<Reservation> reservations = reservationRepository.findAllForGuest(connectedUser.getName(), createOwnerRatingDTO.getOwnerId());
                 if (reservations.size() == 0) {
                     throw new RuntimeException("The guest has no uncancelled reservations. Rating is not allowed.");
 
                 }
 
-                rating.setGuest(user);
+                //rating.setGuest(user);
             } else {
                 // Handle the case where the principal is not an instance of User
-                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
+                //throw new RuntimeException("Unexpected principal type: " + principal.getClass());
             }
-        } else {
-            // Handle the case where there is no authentication
-            throw new RuntimeException("User not authenticated");
-        }
+//        } else {
+//            // Handle the case where there is no authentication
+//            throw new RuntimeException("User not authenticated");
+//        }
 
-        Owner owner = (Owner) userRepository.findById(createOwnerRatingDTO.getOwnerId()).orElseGet(null);
-        rating.setOwner(owner);
+//        Owner owner = (Owner) userRepository.findById(createOwnerRatingDTO.getOwnerId()).orElseGet(null);
+//        rating.setOwner(owner);
         ownerRatingRepository.save(rating);
         OwnerRatingDTO ownerRatingDTO = OwnerRatingDTO.makeFromOwnerRating(rating);
         return ownerRatingDTO;
@@ -112,7 +112,7 @@ public class OwnerRatingService implements IOwnerRatingService {
     }
 
     @Override
-    public List<OwnerRating> getAllForOwner(Long ownerId) {
+    public List<OwnerRating> getAllForOwner(String ownerId) {
         return ownerRatingRepository.findAllForOwner(ownerId);
     }
 

@@ -14,7 +14,7 @@ import java.util.Date;
 
 public @Data @AllArgsConstructor @NoArgsConstructor class ReservationDTO {
     @NotNull
-    private Long guestId;
+    private String guestId;
     @NotNull
     private Long accommodationId;
     private Long id;

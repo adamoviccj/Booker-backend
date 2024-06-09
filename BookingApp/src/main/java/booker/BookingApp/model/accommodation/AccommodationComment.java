@@ -1,12 +1,19 @@
 package booker.BookingApp.model.accommodation;
 
-import booker.BookingApp.model.users.User;
+import booker.BookingApp.model.base.BaseEntity;
+//import booker.BookingApp.model.users.User;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
+@Getter
+@Setter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public @Data class AccommodationComment {
+public class AccommodationComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,9 +22,12 @@ public @Data class AccommodationComment {
     @JoinColumn(name = "accommodation_id")
     private Accommodation accommodation;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "guest_id")
-    private User user;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "guest_id")
+//    private User user;
+
+    @Column(name = "guest_id")
+    private String guestId;
 
     @Column(name = "content", nullable = false) // unique = true
     private String content;

@@ -36,7 +36,7 @@ public class ReservationRequestController {
 
     //find all requests for owner
     @GetMapping(value = "/owner/{ownerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> findOwnersRequests(@PathVariable Long ownerId)
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> findOwnersRequests(@PathVariable String ownerId)
     {
         ArrayList<ReservationRequestDTO> requests = service.findOwnersRequests(ownerId);
         return new ResponseEntity<>(requests, HttpStatus.OK);
@@ -44,7 +44,7 @@ public class ReservationRequestController {
 
     //find all requests for owner, filter by status
     @PostMapping(value = "/owner/{ownerId}/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> findOwnersRequestsByStatus(@PathVariable Long ownerId,
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> findOwnersRequestsByStatus(@PathVariable String ownerId,
                                                                                        @RequestBody ArrayList<Filter> filters)
     {
         ArrayList<ReservationRequestDTO> requests = service.findOwnersRequests(ownerId);
@@ -65,7 +65,7 @@ public class ReservationRequestController {
     //   find all requests for owner, search
     //   /api/requests/owner/5/search/12.12.2023./Modern
     @GetMapping(value = "/owner/{ownerId}/search/{date}/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchOwnersRequests(@PathVariable Long ownerId,
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchOwnersRequests(@PathVariable String ownerId,
                                                                                  @PathVariable String date,
                                                                                  @PathVariable String name) throws IOException {
         ArrayList<ReservationRequestDTO> requests = service.searchForOwner(ownerId, date, name);
@@ -76,7 +76,7 @@ public class ReservationRequestController {
     //   /api/requests/owner/5/search/12.12.2023/Modern/filter
     //   and request body contains json with filter array
     @PostMapping(value = "/owner/{ownerId}/search/{date}/{name}/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchAndFilterOwnersRequests(@PathVariable Long ownerId,
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchAndFilterOwnersRequests(@PathVariable String ownerId,
                                                                                           @PathVariable String date,
                                                                                           @PathVariable String name,
                                                                                           @RequestBody ArrayList<Filter> filters) throws IOException {
@@ -97,7 +97,7 @@ public class ReservationRequestController {
 
     //find all requests for guest
     @GetMapping(value = "/guest/{guestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> findGuestsRequests(@PathVariable Long guestId)
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> findGuestsRequests(@PathVariable String guestId)
     {
         ArrayList<ReservationRequestDTO> requests = service.findGuestsRequests(guestId);
         return new ResponseEntity<>(requests, HttpStatus.OK);
@@ -105,7 +105,7 @@ public class ReservationRequestController {
 
     //find all requests for guest, filter by status
     @PostMapping(value = "/guest/{guestId}/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> findGuestsRequestsByStatus(@PathVariable Long guestId,
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> findGuestsRequestsByStatus(@PathVariable String guestId,
                                                                                        @RequestBody ArrayList<Filter> filters)
     {
         ArrayList<ReservationRequestDTO> requests = service.findGuestsRequests(guestId);
@@ -126,7 +126,7 @@ public class ReservationRequestController {
     //   find all requests for guest, search
     //   /api/requests/guest/5/search?date=12.12.2023.&name=Modern
     @GetMapping(value = "/guest/{guestId}/search/{date}/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchGuestsRequests(@PathVariable Long guestId,
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchGuestsRequests(@PathVariable String guestId,
                                                                                  @PathVariable String date,
                                                                                  @PathVariable String name) throws IOException {
         ArrayList<ReservationRequestDTO> requests = service.search(guestId, date, name);
@@ -137,7 +137,7 @@ public class ReservationRequestController {
     //   /api/requests/guest/5/search?date=12.12.2023.&name=Modern?status=WAITING
     //   and request body contains json with filter array
     @PostMapping(value = "/guest/{guestId}/search/{date}/{name}/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchAndFilterGuestsRequests(@PathVariable Long guestId,
+    public ResponseEntity<ArrayList<ReservationRequestDTO>> searchAndFilterGuestsRequests(@PathVariable String guestId,
                                                                                           @PathVariable String date,
                                                                                           @PathVariable String name,
                                                                                           @RequestBody ArrayList<Filter> filters) throws IOException {
@@ -158,7 +158,7 @@ public class ReservationRequestController {
 
     //cancel request for guest
     @DeleteMapping(value = "/guest/{guestId}/cancel-request/{requestId}")
-    public ResponseEntity<Void> cancelRequest(@PathVariable Long guestId, @PathVariable Long requestId) {
+    public ResponseEntity<Void> cancelRequest(@PathVariable String guestId, @PathVariable Long requestId) {
         service.cancelRequest(guestId, requestId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -5,11 +5,12 @@ import booker.BookingApp.dto.commentsAndRatings.OwnerCommentDTO;
 import booker.BookingApp.dto.commentsAndRatings.OwnerRatingDTO;
 import booker.BookingApp.model.commentsAndRatings.OwnerRating;
 import booker.BookingApp.service.implementation.OwnerRatingService;
-import booker.BookingApp.service.implementation.UserService;
+//import booker.BookingApp.service.implementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ import java.util.List;
 public class OwnerRatingController {
     @Autowired
     private OwnerRatingService ownerRatingService;
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<OwnerRatingDTO>> getAllOwnerRatings() {
@@ -95,8 +96,8 @@ public class OwnerRatingController {
     }
 
     @PostMapping(value = "/add_rating", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OwnerRatingDTO> create(@RequestBody CreateOwnerRatingDTO createOwnerRatingDTO) {
-         OwnerRatingDTO ownerRatingDTO =  ownerRatingService.create(createOwnerRatingDTO);
+    public ResponseEntity<OwnerRatingDTO> create(@RequestBody CreateOwnerRatingDTO createOwnerRatingDTO, Authentication connectedUser) {
+         OwnerRatingDTO ownerRatingDTO =  ownerRatingService.create(createOwnerRatingDTO, connectedUser);
         return new ResponseEntity<>(ownerRatingDTO, HttpStatus.CREATED);
     }
 
@@ -107,7 +108,7 @@ public class OwnerRatingController {
     }
 
     @GetMapping(value = "/{owner_id}/ratings")
-    public ResponseEntity<List<OwnerRatingDTO>> findAllForOwner(@PathVariable Long owner_id) {
+    public ResponseEntity<List<OwnerRatingDTO>> findAllForOwner(@PathVariable String owner_id) {
         List<OwnerRating> ratings = ownerRatingService.getAllForOwner(owner_id);
         List<OwnerRatingDTO> ratingDTOS = new ArrayList<>();
         for(OwnerRating rating : ratings) {

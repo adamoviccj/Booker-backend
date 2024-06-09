@@ -7,9 +7,9 @@ import lombok.Data;
 
 public @Data class CreateReportUserDTO {
     @NotNull
-    private Long reportedId;
+    private String reportedId;
     @NotNull
-    private Long reporterId;
+    private String reporterId;
     @NotEmpty
     private String reason;
 
@@ -20,7 +20,7 @@ public @Data class CreateReportUserDTO {
         this(userReport.getReportedId(), userReport.getReporterId(), userReport.getReason());
     }
 
-    public CreateReportUserDTO(Long reportedId, Long reporterId, String reason) {
+    public CreateReportUserDTO(String reportedId, String reporterId, String reason) {
         this.reportedId = reportedId;
         this.reporterId = reporterId;
         this.reason = reason;

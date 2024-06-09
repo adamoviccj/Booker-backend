@@ -14,7 +14,7 @@ import java.util.Date;
 public @Data @AllArgsConstructor @NoArgsConstructor class NotificationDTO {
     private Long id;
     @NotNull
-    private Long userId;
+    private String userId;
     @NotEmpty
     private String time;
     @NotEmpty

@@ -23,7 +23,7 @@ public class ReportController {
 
     //get report for owner for date interval
     @GetMapping(value = "/owner/{ownerId}/interval/{from}/{to}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<Report>> getIntervalReport(@PathVariable Long ownerId,
+    public ResponseEntity<ArrayList<Report>> getIntervalReport(@PathVariable String ownerId,
                                                                @PathVariable String from,
                                                                @PathVariable String to) throws ParseException {
         ArrayList<Report> reports = service.getIntervalReport(ownerId, from, to);
@@ -32,7 +32,7 @@ public class ReportController {
 
     //get report for owners accommodation
     @GetMapping(value = "/owner/{ownerId}/accommodation/{year}/{accommodation}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<Report>> getAccommodationReport(@PathVariable Long ownerId ,
+    public ResponseEntity<ArrayList<Report>> getAccommodationReport(@PathVariable String ownerId ,
                                                                          @PathVariable int year,
                                                                          @PathVariable Long accommodation) throws IOException, ParseException {
         ArrayList<Report> data = service.getAccommodationReport(ownerId, accommodation, year);

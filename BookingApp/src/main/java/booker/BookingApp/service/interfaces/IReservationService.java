@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public interface IReservationService {
     ArrayList<ReservationDTO> findAll();
 
-    ArrayList<ReservationDTO> getAllForGuest(Long guestId);
+    ArrayList<ReservationDTO> getAllForGuest(String guestId);
 
     ArrayList<ReservationDTO> getAllForAccommodation(Long accommodationId);
 
@@ -23,5 +23,5 @@ public interface IReservationService {
 
     boolean cancel(Long reservationId);
 
-    ArrayList<ReservationDTO> getAllFutureForGuest(Long guestId);
+    ArrayList<ReservationDTO> getAllFutureForGuest(String guestId);
 }

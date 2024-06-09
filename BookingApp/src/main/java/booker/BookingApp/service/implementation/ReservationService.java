@@ -56,7 +56,7 @@ public class ReservationService implements IReservationService {
     }
 
     @Override
-    public ArrayList<ReservationDTO> getAllForGuest(Long guestId) {
+    public ArrayList<ReservationDTO> getAllForGuest(String guestId) {
         List<Reservation> all = reservationRepository.getAllForGuest(guestId);
         ArrayList<ReservationDTO> guestReservations = new ArrayList<>();
         for (Reservation r : all){
@@ -149,7 +149,7 @@ public class ReservationService implements IReservationService {
     }
 
     @Override
-    public ArrayList<ReservationDTO> getAllFutureForGuest(Long guestId) {
+    public ArrayList<ReservationDTO> getAllFutureForGuest(String guestId) {
         List<Reservation> allGuestsReservations = reservationRepository.getAllForGuest(guestId);
         ArrayList<ReservationDTO> guestReservations = new ArrayList<>();
         for (Reservation r : allGuestsReservations){

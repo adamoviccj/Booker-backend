@@ -5,7 +5,7 @@ import booker.BookingApp.enums.AccommodationType;
 import booker.BookingApp.enums.PriceType;
 import booker.BookingApp.model.accommodation.*;
 import booker.BookingApp.model.requestsAndReservations.Reservation;
-import booker.BookingApp.model.users.Owner;
+//import booker.BookingApp.model.users.Owner;
 import booker.BookingApp.repository.*;
 import booker.BookingApp.service.interfaces.IAccommodationService;
 import booker.BookingApp.util.ImageUploadUtil;
@@ -85,7 +85,7 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public AccommodationViewDTO create(CreateAccommodationDTO accommodationDto) throws Exception {
+    public AccommodationViewDTO create(CreateAccommodationDTO accommodationDto, Authentication connectedUser) throws Exception {
         Accommodation accommodation = new Accommodation();
         accommodation.setTitle(accommodationDto.getTitle());
         accommodation.setDescription(accommodationDto.getDescription());
@@ -94,26 +94,28 @@ public class AccommodationService implements IAccommodationService {
         accommodation.setMax_capacity(accommodationDto.getMax_capacity());
         accommodation.setType(accommodationDto.getType());
         accommodation.setManual_accepting(true);
+        accommodation.setOwner_id(connectedUser.getName());
+
 
         //addressRepository.save(address);
         //accommodation.setAddress(address);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof Owner) {
-                Owner user = (Owner) principal;
-                accommodation.setOwner_id(user.getId());
-            } else {
-                // Handle the case where the principal is not an instance of User
-                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
-            }
-        } else {
-            // Handle the case where there is no authentication
-            throw new RuntimeException("User not authenticated");
-        }
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof Owner) {
+//                Owner user = (Owner) principal;
+//                accommodation.setOwner_id(user.getId());
+//            } else {
+//                // Handle the case where the principal is not an instance of User
+//                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
+//            }
+//        } else {
+//            // Handle the case where there is no authentication
+//            throw new RuntimeException("User not authenticated");
+//        }
 
         repository.save(accommodation);
 
@@ -218,7 +220,7 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public ArrayList<AccommodationListingDTO> findOwnersActiveAccommodations(Long ownerId) {
+    public ArrayList<AccommodationListingDTO> findOwnersActiveAccommodations(String ownerId) {
         List<Accommodation> accommodations = repository.findSpecifiedForOwner(ownerId, true);
         ArrayList<AccommodationListingDTO> dtos = new ArrayList<>();
         for(Accommodation a : accommodations) {
@@ -273,7 +275,7 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public ArrayList<AccommodationListingDTO> findAllOwnersAccommodations(Long ownerId) {
+    public ArrayList<AccommodationListingDTO> findAllOwnersAccommodations(String ownerId) {
         List<Accommodation> accommodations = repository.findAllForOwner(ownerId);
         ArrayList<AccommodationListingDTO> dtos = new ArrayList<>();
         for(Accommodation a : accommodations) {
@@ -483,7 +485,7 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public ArrayList<AccommodationNameDTO> getAccommodationNames(Long ownerId) {
+    public ArrayList<AccommodationNameDTO> getAccommodationNames(String ownerId) {
         List<AccommodationListingDTO> accommodations = findOwnersActiveAccommodations(ownerId);
         ArrayList<AccommodationNameDTO> names = new ArrayList<>();
         for(AccommodationListingDTO accommodation:accommodations) {

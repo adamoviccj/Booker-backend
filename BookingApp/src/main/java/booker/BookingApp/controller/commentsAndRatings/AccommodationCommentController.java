@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/accommodation_comments")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class AccommodationCommentController {
     @Autowired
     private AccommodationCommentService accommodationCommentService;
@@ -106,8 +108,8 @@ public class AccommodationCommentController {
 //    }
 
     @PostMapping(value = "/add_comment",  consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccommodationCommentDTO> create(@Valid @RequestBody CreateAccommodationCommentDTO accommodationCommentDTO) {
-        AccommodationCommentDTO commentDTO = accommodationCommentService.create(accommodationCommentDTO);
+    public ResponseEntity<AccommodationCommentDTO> create(@Valid @RequestBody CreateAccommodationCommentDTO accommodationCommentDTO, Authentication connectedUser) {
+        AccommodationCommentDTO commentDTO = accommodationCommentService.create(accommodationCommentDTO, connectedUser);
         return new ResponseEntity<>(commentDTO, HttpStatus.CREATED);
     }
 
@@ -118,11 +120,11 @@ public class AccommodationCommentController {
     }
 
     @PutMapping(value = "/remove/{accommodation_comment_id}")
-    public ResponseEntity<Void> delete(@PathVariable Long accommodation_comment_id) {
+    public ResponseEntity<Void> delete(@PathVariable Long accommodation_comment_id, Authentication connectedUser) {
         AccommodationComment accommodationComment = accommodationCommentService.findOne(accommodation_comment_id);
 
         if (accommodationComment != null) {
-            accommodationCommentService.delete(accommodation_comment_id);
+            accommodationCommentService.delete(accommodation_comment_id, connectedUser);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -166,5 +168,28 @@ public class AccommodationCommentController {
         accommodationCommentService.approveComment(comment_id);
         AccommodationCommentDTO accommodationCommentDTO = new AccommodationCommentDTO(accommodationCommentService.findOne(comment_id));
         return new ResponseEntity<>(accommodationCommentDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/hello-guest")
+//    @PreAuthorize("hasAuthority('HELLO_GUEST')")
+    public String helloGuest() {
+        return "Hello guest";
+    }
+
+    @GetMapping("/hello-admin")
+//    @PreAuthorize("hasAuthority('HELLO_ADMIN')")
+    public String helloAdmin() {
+        return "Hello admin";
+    }
+
+    @GetMapping("/hello-owner")
+//    @PreAuthorize("hasAuthority('HELLO_OWNER')")
+    public String helloOwner() {
+        return "Hello owner";
+    }
+
+    @GetMapping("/hello-superadmin")
+    public String helloSuperAdmin() {
+        return "Hello superAdmin";
     }
 }

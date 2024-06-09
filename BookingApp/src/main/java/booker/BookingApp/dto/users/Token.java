@@ -1,21 +1,21 @@
 package booker.BookingApp.dto.users;
 
 public class Token {
-    private long userId;
+    private String userId;
     private String token;
     public Token(){
     }
 
-    public Token(long userId, String token) {
+    public Token(String userId, String token) {
         this.userId = userId;
         this.token = token;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

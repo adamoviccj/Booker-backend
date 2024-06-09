@@ -1,0 +1,8 @@
+{
+  "realm": "booker-realm",
+  "auth-server-url": "http://localhost:8080",
+  "resource": "booker",
+  "credentials": {
+    "secret": "rn52FbJPcyK1xVNEIiScLu8cViC7yoSd"
+  }
+}

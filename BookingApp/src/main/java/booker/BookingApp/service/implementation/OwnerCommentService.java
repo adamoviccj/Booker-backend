@@ -3,8 +3,8 @@ package booker.BookingApp.service.implementation;
 import booker.BookingApp.dto.commentsAndRatings.CreateOwnerCommentDTO;
 import booker.BookingApp.dto.commentsAndRatings.OwnerCommentDTO;
 import booker.BookingApp.model.commentsAndRatings.OwnerComment;
-import booker.BookingApp.model.users.Guest;
-import booker.BookingApp.model.users.Owner;
+//import booker.BookingApp.model.users.Guest;
+//import booker.BookingApp.model.users.Owner;
 import booker.BookingApp.repository.OwnerCommentRepository;
 import booker.BookingApp.repository.ReservationRepository;
 import booker.BookingApp.repository.UserRepository;
@@ -23,8 +23,8 @@ import java.util.List;
 public class OwnerCommentService implements IOwnerCommentService {
     @Autowired
     private OwnerCommentRepository ownerCommentRepository;
-    @Autowired
-    private UserRepository userRepository;
+//    @Autowired
+//    private UserRepository userRepository;
     @Autowired
     private ReservationRepository reservationRepository;
 
@@ -32,13 +32,14 @@ public class OwnerCommentService implements IOwnerCommentService {
     public OwnerComment findOne(Long id) {
         return ownerCommentRepository.findById(id).orElse(null);
     }
+
     @Override
     public List<OwnerComment> findAll() {
         return ownerCommentRepository.findAll();
     }
 
     @Override
-    public List<OwnerCommentDTO> findAllForOwner(Long ownerId) {
+    public List<OwnerCommentDTO> findAllForOwner(String ownerId) {
         List<OwnerComment> ownerComments = ownerCommentRepository.findAllForOwner(ownerId);
         List<OwnerCommentDTO> ownerCommentDTOS = new ArrayList<>();
         for (OwnerComment ownerComment : ownerComments) {
@@ -50,61 +51,65 @@ public class OwnerCommentService implements IOwnerCommentService {
 
     @Transactional
     @Override
-    public void remove(Long id) {
+    public void remove(Long id, Authentication connectedUser) {
         OwnerComment ownerComment = ownerCommentRepository.findById(id).orElseGet(null);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
 
-            if (principal instanceof Guest) {
-                Guest user = (Guest) principal;
-                if (ownerComment != null) {
-                    ownerComment.setDeleted(true);
-                    ownerCommentRepository.save(ownerComment);
-                }
-            } else {
-                // Handle the case where the principal is not an instance of User
-                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
-            }
-        } else {
-            // Handle the case where there is no authentication
-            throw new RuntimeException("User not authenticated");
+        //if (principal instanceof Guest) {
+        //Guest user = (Guest) principal;
+        if (ownerComment != null) {
+            ownerComment.setDeleted(true);
+            ownerCommentRepository.save(ownerComment);
         }
-    }
+        //} else {
+        // Handle the case where the principal is not an instance of User
+        //throw new RuntimeException("Unexpected principal type: " + principal.getClass());
+    //}
+//        } else {
+//            // Handle the case where there is no authentication
+//            throw new RuntimeException("User not authenticated");
+//        }
+
+        }
 
 
     @Override
-    public OwnerCommentDTO create(CreateOwnerCommentDTO createOwnerCommentDTO) {
+    public OwnerCommentDTO create(CreateOwnerCommentDTO createOwnerCommentDTO, Authentication connectedUser) {
         OwnerComment ownerComment = new OwnerComment();
         ownerComment.setContent(createOwnerCommentDTO.getContent());
         ownerComment.setReported(false);
         ownerComment.setDate(new Date());
         ownerComment.setDeleted(false);
         ownerComment.setApproved(false);
+
         ownerComment.setRating(createOwnerCommentDTO.getRating());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
 
-            if (principal instanceof Guest) {
-                Guest user = (Guest) principal;
-                if (reservationRepository.findAllForGuest(user.getId(), createOwnerCommentDTO.getOwnerId()).size() == 0) {
+            //if (principal instanceof Guest) {
+               // Guest user = (Guest) principal;
+                if (reservationRepository.findAllForGuest(connectedUser.getName(), createOwnerCommentDTO.getOwnerId()).size() == 0) {
                     throw new RuntimeException("The guest has no uncancelled reservations. Commenting is not allowed.");
                 }
 
-                ownerComment.setGuest(user);
+                //ownerComment.setGuest(user);
             } else {
                 // Handle the case where the principal is not an instance of User
-                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
+                //throw new RuntimeException("Unexpected principal type: " + principal.getClass());
             }
-        } else {
-            // Handle the case where there is no authentication
-            throw new RuntimeException("User not authenticated");
-        }
-        Owner owner = (Owner) userRepository.findById(createOwnerCommentDTO.getOwnerId()).orElseGet(null);
-        ownerComment.setOwner(owner);
+//        } else {
+//            // Handle the case where there is no authentication
+//            throw new RuntimeException("User not authenticated");
+//        }
+        //Owner owner = (Owner) userRepository.findById(createOwnerCommentDTO.getOwnerId()).orElseGet(null);
+       //ownerComment.setOwner(owner);
+
+        ownerComment.setOwnerId(connectedUser.getName());
 
         ownerCommentRepository.save(ownerComment);
         OwnerCommentDTO ownerCommentDTO = OwnerCommentDTO.createFromOwnerComment(ownerComment);
@@ -138,7 +143,7 @@ public class OwnerCommentService implements IOwnerCommentService {
     }
 
     @Override
-    public List<OwnerCommentDTO> findAllNotDeletedForOwner(Long ownerId) {
+    public List<OwnerCommentDTO> findAllNotDeletedForOwner(String ownerId) {
         List<OwnerComment> comments = ownerCommentRepository.findAllNotDeletedForOwner(ownerId);
         List<OwnerCommentDTO> notDeleted = new ArrayList<>();
         for (OwnerComment comment : comments) {

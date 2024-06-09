@@ -11,9 +11,9 @@ import java.util.Date;
 
 public @Data class CreateOwnerCommentDTO {
     @NotNull
-    private Long ownerId;
+    private String ownerId;
     @NotNull
-    private Long guestId;
+    private String guestId;
     @NotEmpty
     private String content;
     @Min(1) @Max(5)
@@ -24,10 +24,10 @@ public @Data class CreateOwnerCommentDTO {
     }
 
     public CreateOwnerCommentDTO(OwnerComment ownerComment) {
-        this(ownerComment.getOwner().getId(), ownerComment.getGuest().getId(), ownerComment.getContent(), ownerComment.getRating());
+        this(ownerComment.getOwnerId(), ownerComment.getGuestId(), ownerComment.getContent(), ownerComment.getRating());
     }
 
-    public CreateOwnerCommentDTO(Long ownerId, Long guestId, String content, double rating) {
+    public CreateOwnerCommentDTO(String ownerId, String guestId, String content, double rating) {
         this.ownerId = ownerId;
         this.guestId = guestId;
         this.content = content;

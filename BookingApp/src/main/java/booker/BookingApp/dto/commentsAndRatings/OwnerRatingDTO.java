@@ -7,8 +7,8 @@ import java.util.Date;
 
 public @Data class OwnerRatingDTO {
     private Long id;
-    private Long ownerId;
-    private Long guestId;
+    private String ownerId;
+    private String guestId;
     private float rate;
     private Date date;
     private boolean reported;
@@ -18,10 +18,10 @@ public @Data class OwnerRatingDTO {
     }
 
     public OwnerRatingDTO(OwnerRating ownerRating) {
-        this(ownerRating.getId(), ownerRating.getOwner().getId(), ownerRating.getGuest().getId(), ownerRating.getRate(), ownerRating.getDate(), ownerRating.isReported(), ownerRating.isDeleted());
+        this(ownerRating.getId(), ownerRating.getOwnerId(), ownerRating.getGuestId(), ownerRating.getRate(), ownerRating.getDate(), ownerRating.isReported(), ownerRating.isDeleted());
     }
 
-    public OwnerRatingDTO(Long id, Long ownerId, Long guestId, float rate, Date date, boolean reported, boolean deleted) {
+    public OwnerRatingDTO(Long id, String ownerId, String guestId, float rate, Date date, boolean reported, boolean deleted) {
         this.id = id;
         this.ownerId = ownerId;
         this.guestId = guestId;
@@ -33,8 +33,8 @@ public @Data class OwnerRatingDTO {
 
     public static OwnerRatingDTO makeFromOwnerRating(OwnerRating ownerRating) {
         return new OwnerRatingDTO(ownerRating.getId(),
-                ownerRating.getOwner().getId(),
-                ownerRating.getGuest().getId(),
+                ownerRating.getOwnerId(),
+                ownerRating.getGuestId(),
                 ownerRating.getRate(),
                 ownerRating.getDate(),
                 ownerRating.isReported(),

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -79,11 +80,11 @@ public class OwnerCommentController {
 //     }
 
     @PutMapping(value = "/remove/{id}")
-    public ResponseEntity<Void> deleteOwnerComment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOwnerComment(@PathVariable Long id, Authentication connectedUser) {
         OwnerComment ownerComment = ownerCommentService.findOne(id);
 
         if (ownerComment != null) {
-            ownerCommentService.remove(id);
+            ownerCommentService.remove(id, connectedUser);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -91,8 +92,8 @@ public class OwnerCommentController {
     }
 
     @PostMapping(value = "/add_comment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OwnerCommentDTO> create(@Valid @RequestBody CreateOwnerCommentDTO commentDTO) {
-        OwnerCommentDTO ownerCommentDTO = ownerCommentService.create(commentDTO);
+    public ResponseEntity<OwnerCommentDTO> create(@Valid @RequestBody CreateOwnerCommentDTO commentDTO, Authentication connectedUser) {
+        OwnerCommentDTO ownerCommentDTO = ownerCommentService.create(commentDTO, connectedUser);
         return new ResponseEntity<>(ownerCommentDTO, HttpStatus.CREATED);
     }
 
@@ -112,7 +113,7 @@ public class OwnerCommentController {
         return new ResponseEntity<>(reportedDTOS, HttpStatus.OK);
     }
     @GetMapping(value = "/all/{owner_id}/comments")
-    public ResponseEntity<List<OwnerCommentDTO>> getAllForOwner(@PathVariable Long owner_id) {
+    public ResponseEntity<List<OwnerCommentDTO>> getAllForOwner(@PathVariable String owner_id) {
         List<OwnerCommentDTO> comments = ownerCommentService.findAllForOwner(owner_id);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
@@ -125,7 +126,7 @@ public class OwnerCommentController {
     }
 
     @GetMapping(value = "/all/{owner_id}/not_deleted")
-    public ResponseEntity<List<OwnerCommentDTO>> getAllNotDeleted(@PathVariable Long owner_id) {
+    public ResponseEntity<List<OwnerCommentDTO>> getAllNotDeleted(@PathVariable String owner_id) {
         List<OwnerCommentDTO> comments = ownerCommentService.findAllNotDeletedForOwner(owner_id);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }

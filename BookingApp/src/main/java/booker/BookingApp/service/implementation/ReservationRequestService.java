@@ -120,7 +120,7 @@ public class ReservationRequestService implements IReservationRequestService {
     }
 
     @Override
-    public ArrayList<ReservationRequestDTO> findOwnersRequests(Long ownerId) {
+    public ArrayList<ReservationRequestDTO> findOwnersRequests(String ownerId) {
         ArrayList<ReservationRequestDTO> requestDTOS = new ArrayList<>();
         /*requestDTOS.add(findOne(1L));
         requestDTOS.add(findOne(2L));
@@ -151,7 +151,7 @@ public class ReservationRequestService implements IReservationRequestService {
     }
 
     @Override
-    public ArrayList<ReservationRequestDTO> search(Long guestId, String dateString, String name) throws IOException {
+    public ArrayList<ReservationRequestDTO> search(String guestId, String dateString, String name) throws IOException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date;
         try {
@@ -193,7 +193,7 @@ public class ReservationRequestService implements IReservationRequestService {
     }
 
     @Override
-    public ArrayList<ReservationRequestDTO> searchForOwner(Long ownerId, String dateString, String name) throws IOException {
+    public ArrayList<ReservationRequestDTO> searchForOwner(String ownerId, String dateString, String name) throws IOException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date;
         try {
@@ -248,7 +248,7 @@ public class ReservationRequestService implements IReservationRequestService {
     }
 
     @Override
-    public ArrayList<ReservationRequestDTO> findGuestsRequests(Long guestId) {
+    public ArrayList<ReservationRequestDTO> findGuestsRequests(String guestId) {
         ArrayList<ReservationRequest> requests = (ArrayList<ReservationRequest>) repository.findAllForGuest(guestId);
         ArrayList<ReservationRequestDTO> dtos = new ArrayList<>();
         for(ReservationRequest request : requests) {
@@ -260,7 +260,7 @@ public class ReservationRequestService implements IReservationRequestService {
     }
 
     @Override
-    public void cancelRequest(Long userId, Long requestId) {
+    public void cancelRequest(String userId, Long requestId) {
         ReservationRequest request = repository.findById(requestId).get();
         request.setDeleted(true);
         repository.save(request);
@@ -274,20 +274,48 @@ public class ReservationRequestService implements IReservationRequestService {
                 reservationRequestDTO.setStatus(ReservationRequestStatus.ACCEPTED);
                 reservationService.create(reservationRequestDTO);
                 declineOthers(reservationRequestDTO);
-                ReservationRequest request = new ReservationRequest(reservationRequestDTO.getId(),
-                        reservationRequestDTO.getGuestId(), reservationRequestDTO.getAccommodationId(), reservationRequestDTO.getFromDate(),
-                        reservationRequestDTO.getToDate(), reservationRequestDTO.getNumberOfGuests(), reservationRequestDTO.getStatus(),
-                        reservationRequestDTO.isDeleted(), reservationRequestDTO.getPrice());
+//                ReservationRequest request = new ReservationRequest(reservationRequestDTO.getId(),
+//                        reservationRequestDTO.getGuestId(), reservationRequestDTO.getAccommodationId(), reservationRequestDTO.getFromDate(),
+//                        reservationRequestDTO.getToDate(), reservationRequestDTO.getNumberOfGuests(), reservationRequestDTO.getStatus(),
+//                        reservationRequestDTO.isDeleted(), reservationRequestDTO.getPrice());
+                ReservationRequest request = new ReservationRequest(
+                        reservationRequestDTO.getId(),
+                        reservationRequestDTO.getCreatedAtDate(),
+                        reservationRequestDTO.getLastModifiedDate(),
+                        reservationRequestDTO.getCreatedBy(),
+                        reservationRequestDTO.getLastModifiedBy(),
+                        reservationRequestDTO.getAccommodationId(),
+                        reservationRequestDTO.getFromDate(),
+                        reservationRequestDTO.getToDate(),
+                        reservationRequestDTO.getNumberOfGuests(),
+                        reservationRequestDTO.getStatus(),
+                        reservationRequestDTO.isDeleted(),
+                        reservationRequestDTO.getPrice()
+                );
                 repository.save(request);
                 return true;
             }
         }
         else{
             reservationRequestDTO.setStatus(ReservationRequestStatus.DENIED);
-            ReservationRequest request = new ReservationRequest(reservationRequestDTO.getId(),
-                    reservationRequestDTO.getGuestId(), reservationRequestDTO.getAccommodationId(), reservationRequestDTO.getFromDate(),
-                    reservationRequestDTO.getToDate(), reservationRequestDTO.getNumberOfGuests(), reservationRequestDTO.getStatus(),
-                    reservationRequestDTO.isDeleted(), reservationRequestDTO.getPrice());
+//            ReservationRequest request = new ReservationRequest(reservationRequestDTO.getId(),
+//                    reservationRequestDTO.getGuestId(), reservationRequestDTO.getAccommodationId(), reservationRequestDTO.getFromDate(),
+//                    reservationRequestDTO.getToDate(), reservationRequestDTO.getNumberOfGuests(), reservationRequestDTO.getStatus(),
+//                    reservationRequestDTO.isDeleted(), reservationRequestDTO.getPrice());
+            ReservationRequest request = new ReservationRequest(
+                    reservationRequestDTO.getId(),
+                    reservationRequestDTO.getCreatedAtDate(),
+                    reservationRequestDTO.getLastModifiedDate(),
+                    reservationRequestDTO.getCreatedBy(),
+                    reservationRequestDTO.getLastModifiedBy(),
+                    reservationRequestDTO.getAccommodationId(),
+                    reservationRequestDTO.getFromDate(),
+                    reservationRequestDTO.getToDate(),
+                    reservationRequestDTO.getNumberOfGuests(),
+                    reservationRequestDTO.getStatus(),
+                    reservationRequestDTO.isDeleted(),
+                    reservationRequestDTO.getPrice()
+            );
             repository.save(request);
             return true;
 
@@ -303,10 +331,25 @@ public class ReservationRequestService implements IReservationRequestService {
                 // if request is not accepted and request and accepted have overlap
                 if (!requestDTO.equals(acceptedRequest) && availabilityService.checkForOverlaps(requestDTO, acceptedRequest)){
                     requestDTO.setStatus(ReservationRequestStatus.DENIED);
-                    ReservationRequest request = new ReservationRequest(requestDTO.getId(),
-                            requestDTO.getGuestId(), requestDTO.getAccommodationId(), requestDTO.getFromDate(),
-                            requestDTO.getToDate(), requestDTO.getNumberOfGuests(), requestDTO.getStatus(),
-                            requestDTO.isDeleted(), requestDTO.getPrice());
+//                    ReservationRequest request = new ReservationRequest(requestDTO.getId(),
+//                            requestDTO.getGuestId(), requestDTO.getAccommodationId(), requestDTO.getFromDate(),
+//                            requestDTO.getToDate(), requestDTO.getNumberOfGuests(), requestDTO.getStatus(),
+//                            requestDTO.isDeleted(), requestDTO.getPrice());
+
+                    ReservationRequest request = new ReservationRequest(
+                            requestDTO.getId(),
+                            requestDTO.getCreatedAtDate(),
+                            requestDTO.getLastModifiedDate(),
+                            requestDTO.getCreatedBy(),
+                            requestDTO.getLastModifiedBy(),
+                            requestDTO.getAccommodationId(),
+                            requestDTO.getFromDate(),
+                            requestDTO.getToDate(),
+                            requestDTO.getNumberOfGuests(),
+                            requestDTO.getStatus(),
+                            requestDTO.isDeleted(),
+                            requestDTO.getPrice()
+                    );
                     repository.save(request);
                 }
             }

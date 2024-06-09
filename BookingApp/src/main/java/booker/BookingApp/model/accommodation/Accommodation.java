@@ -1,6 +1,7 @@
 package booker.BookingApp.model.accommodation;
 
 import booker.BookingApp.enums.AccommodationType;
+import booker.BookingApp.model.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public @Data @AllArgsConstructor @NoArgsConstructor class Accommodation {
     @Column(name = "short_description")
     private String shortDescription;
     @Column(name = "owner_id", nullable = false)
-    private Long owner_id;
+    private String owner_id;
     @OneToMany(mappedBy = "accommodation", fetch = FetchType.EAGER)
     @Column(name = "amenities", nullable = false)
     @JsonIgnore

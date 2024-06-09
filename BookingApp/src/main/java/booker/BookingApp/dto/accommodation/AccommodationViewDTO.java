@@ -34,7 +34,7 @@ public @Data @AllArgsConstructor @NoArgsConstructor class AccommodationViewDTO {
     @NotNull
     private List<AccommodationComment> comments;
     @NotNull
-    private Long owner_id;
+    private String owner_id;
     @Min(1)
     private int min_capacity;
     @Min(1)

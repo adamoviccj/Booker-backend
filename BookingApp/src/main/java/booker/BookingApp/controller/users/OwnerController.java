@@ -3,7 +3,7 @@ package booker.BookingApp.controller.users;
 
 import booker.BookingApp.dto.users.GuestDTO;
 import booker.BookingApp.dto.users.OwnerDTO;
-import booker.BookingApp.dto.users.UpdateUserDTO;
+//import booker.BookingApp.dto.users.UpdateUserDTO;
 import booker.BookingApp.service.implementation.OwnerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class OwnerController {
     }
 
     @GetMapping(value = "/{ownerId}")
-    public ResponseEntity<OwnerDTO> getOwnerById(@PathVariable Long ownerId) {
+    public ResponseEntity<OwnerDTO> getOwnerById(@PathVariable String ownerId) {
         OwnerDTO ownerDTO = ownerService.getOwnerById(ownerId);
         if(ownerDTO == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,23 +54,23 @@ public class OwnerController {
         return new ResponseEntity<>(ownerDTO, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{ownerId}")
-    public ResponseEntity<OwnerDTO> update(@PathVariable("ownerId") Long id, @Valid @RequestBody UpdateUserDTO updateUserDTO) {
-        try{
-            OwnerDTO existingOwner = ownerService.getOwnerById(id);
-            if(existingOwner == null){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            OwnerDTO updatedOwner = ownerService.update(existingOwner, updateUserDTO);
-            return new ResponseEntity<>(updatedOwner, HttpStatus.OK);
-        }catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PutMapping(value = "/{ownerId}")
+//    public ResponseEntity<OwnerDTO> update(@PathVariable("ownerId") String id, @Valid @RequestBody UpdateUserDTO updateUserDTO) {
+//        try{
+//            OwnerDTO existingOwner = ownerService.getOwnerById(id);
+//            if(existingOwner == null){
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//            OwnerDTO updatedOwner = ownerService.update(existingOwner, updateUserDTO);
+//            return new ResponseEntity<>(updatedOwner, HttpStatus.OK);
+//        }catch (Exception e) {
+//            System.out.println(e);
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PutMapping(value = "/delete/{ownerId}")
-    public ResponseEntity<Boolean> delete(@PathVariable Long ownerId) {
+    public ResponseEntity<Boolean> delete(@PathVariable String ownerId) {
         OwnerDTO ownerDTO = ownerService.getOwnerById(ownerId);
         if (ownerDTO == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -82,7 +82,7 @@ public class OwnerController {
 
     // admin blocks the owner by id
     @PutMapping(consumes = "application/json", value = "/block/{ownerId}")
-    public ResponseEntity<Void> block(@PathVariable Long ownerId) {
+    public ResponseEntity<Void> block(@PathVariable String ownerId) {
         OwnerDTO ownerDTO = ownerService.getOwnerById(ownerId);
         if (ownerDTO == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -104,7 +104,7 @@ public class OwnerController {
 
     // get all owner's guests
     @GetMapping(value = "/{ownerId}/guests")
-    public ResponseEntity<ArrayList<GuestDTO>> getGuestsForOwner(@PathVariable("ownerId") Long ownerId){
+    public ResponseEntity<ArrayList<GuestDTO>> getGuestsForOwner(@PathVariable("ownerId") String ownerId){
         ArrayList<GuestDTO> guests = ownerService.getAllGuestsForOwner(ownerId);
         return new ResponseEntity<>(guests, HttpStatus.OK);
     }

@@ -5,8 +5,8 @@ import booker.BookingApp.dto.accommodation.CreateAccommodationCommentDTO;
 import booker.BookingApp.model.accommodation.Accommodation;
 import booker.BookingApp.model.accommodation.AccommodationComment;
 import booker.BookingApp.model.requestsAndReservations.Reservation;
-import booker.BookingApp.model.users.Guest;
-import booker.BookingApp.model.users.User;
+//import booker.BookingApp.model.users.Guest;
+//import booker.BookingApp.model.users.User;
 import booker.BookingApp.repository.AccommodationCommentRepository;
 import booker.BookingApp.repository.AccommodationRepository;
 import booker.BookingApp.repository.ReservationRepository;
@@ -63,7 +63,7 @@ public class AccommodationCommentService implements IAccommodationCommentService
 //    }
 
     @Override
-    public AccommodationCommentDTO create(CreateAccommodationCommentDTO createAccommodationCommentDTO) {
+    public AccommodationCommentDTO create(CreateAccommodationCommentDTO createAccommodationCommentDTO, Authentication connectedUser) {
         AccommodationComment accommodationComment = new AccommodationComment();
         accommodationComment.setContent(createAccommodationCommentDTO.getContent());
         accommodationComment.setReported(false);
@@ -72,22 +72,12 @@ public class AccommodationCommentService implements IAccommodationCommentService
         accommodationComment.setApproved(false);
         accommodationComment.setRating(createAccommodationCommentDTO.getRating());
 
-
-
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof User) {
-                User user = (User) principal;
-                List<Reservation> reservations = reservationRepository.findAllForGuestInAccommodation(user.getId(), createAccommodationCommentDTO.getAccommodationId());
+        List<Reservation> reservations = reservationRepository.findAllForGuestInAccommodation(connectedUser.getName(), createAccommodationCommentDTO.getAccommodationId());
                 for (Reservation r : reservations) {
                     System.out.println(r.toString());
                 }
-                if (reservationRepository.findAllForGuestInAccommodation(user.getId(), createAccommodationCommentDTO.getAccommodationId()).size() != 0) {
-                    Reservation lastReservation = reservationRepository.findLastPastReservationForGuestInAccommodation(user.getId(), createAccommodationCommentDTO.getAccommodationId());
+                if (reservationRepository.findAllForGuestInAccommodation(connectedUser.getName(), createAccommodationCommentDTO.getAccommodationId()).size() != 0) {
+                    Reservation lastReservation = reservationRepository.findLastPastReservationForGuestInAccommodation(connectedUser.getName(), createAccommodationCommentDTO.getAccommodationId());
                     System.out.println(lastReservation.toString());
                     if(hasPassedFiveMinutesFromEnd(lastReservation.getToTime())) {
                         throw new RuntimeException("5 minutes passed");
@@ -100,15 +90,45 @@ public class AccommodationCommentService implements IAccommodationCommentService
 
 
 
-                accommodationComment.setUser(user);
-            } else {
-                // Handle the case where the principal is not an instance of User
-                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
-            }
-        } else {
-            // Handle the case where there is no authentication
-            throw new RuntimeException("User not authenticated");
-        }
+                accommodationComment.setGuestId(connectedUser.getName());
+
+
+
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof User) {
+//                User user = (User) principal;
+//                List<Reservation> reservations = reservationRepository.findAllForGuestInAccommodation(user.getId(), createAccommodationCommentDTO.getAccommodationId());
+//                for (Reservation r : reservations) {
+//                    System.out.println(r.toString());
+//                }
+//                if (reservationRepository.findAllForGuestInAccommodation(user.getId(), createAccommodationCommentDTO.getAccommodationId()).size() != 0) {
+//                    Reservation lastReservation = reservationRepository.findLastPastReservationForGuestInAccommodation(user.getId(), createAccommodationCommentDTO.getAccommodationId());
+//                    System.out.println(lastReservation.toString());
+//                    if(hasPassedFiveMinutesFromEnd(lastReservation.getToTime())) {
+//                        throw new RuntimeException("5 minutes passed");
+//                    }
+//                } else {
+//                    throw new RuntimeException("The guest has no uncancelled reservations. Commenting is not allowed.");
+//                }
+//
+//
+//
+//
+//
+//                accommodationComment.setUser(user);
+//            } else {
+//                // Handle the case where the principal is not an instance of User
+//                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
+//            }
+//        } else {
+//            // Handle the case where there is no authentication
+//            throw new RuntimeException("User not authenticated");
+//        }
 
         Accommodation accommodation = accommodationRepository.findById(createAccommodationCommentDTO.getAccommodationId()).orElseGet(null);
         accommodationComment.setAccommodation(accommodation);
@@ -124,26 +144,31 @@ public class AccommodationCommentService implements IAccommodationCommentService
     }
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(Long id, Authentication connectedUser) {
         AccommodationComment accommodationComment = accommodationCommentRepository.findById(id).orElseGet(null);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof User) {
+//                User user = (User) principal;
+//                if (accommodationComment != null) {
+//                    accommodationComment.setDeleted(true);
+//                    accommodationCommentRepository.save(accommodationComment);
+//                }
+//            } else {
+//                // Handle the case where the principal is not an instance of User
+//                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
+//            }
+//        } else {
+//            // Handle the case where there is no authentication
+//            throw new RuntimeException("User not authenticated");
+//        }
 
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof User) {
-                User user = (User) principal;
-                if (accommodationComment != null) {
-                    accommodationComment.setDeleted(true);
-                    accommodationCommentRepository.save(accommodationComment);
-                }
-            } else {
-                // Handle the case where the principal is not an instance of User
-                throw new RuntimeException("Unexpected principal type: " + principal.getClass());
-            }
-        } else {
-            // Handle the case where there is no authentication
-            throw new RuntimeException("User not authenticated");
+        if (accommodationComment != null) {
+            accommodationComment.setDeleted(true);
+            accommodationCommentRepository.save(accommodationComment);
         }
     }
 

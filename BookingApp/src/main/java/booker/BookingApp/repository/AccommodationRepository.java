@@ -2,7 +2,7 @@ package booker.BookingApp.repository;
 
 import booker.BookingApp.model.accommodation.Accommodation;
 import booker.BookingApp.model.accommodation.AccommodationRating;
-import booker.BookingApp.model.users.User;
+//import booker.BookingApp.model.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,13 +17,13 @@ public interface AccommodationRepository  extends JpaRepository<Accommodation, L
     public List<Accommodation> searchAccommodations(@Param("location") String location, @Param("people") int people);
 
     @Query(value = "SELECT a FROM Accommodation a WHERE a.owner_id = :ownerId")
-    public List<Accommodation>findAllForOwner(@Param("ownerId") Long ownerId);
+    public List<Accommodation>findAllForOwner(@Param("ownerId") String ownerId);
 
     @Query(value = "SELECT a FROM Accommodation a WHERE a.owner_id = :ownerId and a.accepted = :accepted")
-    public List<Accommodation>findSpecifiedForOwner(@Param("ownerId") Long ownerId, @Param("accepted") Boolean accepted);
+    public List<Accommodation>findSpecifiedForOwner(@Param("ownerId") String ownerId, @Param("accepted") Boolean accepted);
 
     @Query(value = "DELETE FROM Accommodation WHERE owner_id = :ownerId")
-    public void deleteForOwner(@Param("ownerId") Long ownerId);
+    public void deleteForOwner(@Param("ownerId") String ownerId);
 
     @Query(value = "SELECT a FROM Accommodation a WHERE a.accepted = :accepted")
     public List<Accommodation>findUnapproved(@Param("accepted") Boolean accepted);

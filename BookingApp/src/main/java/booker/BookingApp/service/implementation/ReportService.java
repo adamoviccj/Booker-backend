@@ -27,7 +27,7 @@ public class ReportService implements IReportService {
     PriceRepository priceRepository;
 
     @Override
-    public ArrayList<Report> getIntervalReport(Long ownerId, String from, String to) throws ParseException {
+    public ArrayList<Report> getIntervalReport(String ownerId, String from, String to) throws ParseException {
         ArrayList<Report> data = new ArrayList<>();
         ArrayList<AccommodationListingDTO> accommodations = accommodationService.findOwnersActiveAccommodations(ownerId);
         double profit;
@@ -68,7 +68,7 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public ArrayList<Report> getAccommodationReport(Long ownerId, Long accommodationId, int year) throws ParseException {
+    public ArrayList<Report> getAccommodationReport(String ownerId, Long accommodationId, int year) throws ParseException {
         ArrayList<Report> data = new ArrayList<>();
         int month = 0;
         double profit;

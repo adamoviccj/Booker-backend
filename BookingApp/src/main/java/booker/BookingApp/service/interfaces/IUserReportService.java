@@ -10,7 +10,7 @@ public interface IUserReportService {
     public UserReportDTO create(CreateReportUserDTO createReportUserDTO);
     public List<UserReportDTO> findAll();
 
-    List<UserReport> getAllForUser(Long userId);
+    List<UserReport> getAllForUser(String userId);
 
-    void blockOrUnblock(Long userId, boolean blocked);
+    void blockOrUnblock(String userId, boolean blocked);
 }

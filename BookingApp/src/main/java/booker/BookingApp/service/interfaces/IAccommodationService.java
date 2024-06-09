@@ -6,6 +6,7 @@ import booker.BookingApp.enums.AccommodationType;
 import booker.BookingApp.enums.PriceType;
 import booker.BookingApp.model.accommodation.Address;
 import booker.BookingApp.model.accommodation.Filter;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public interface IAccommodationService {
 
     AccommodationViewDTO findOne(Long id) throws IOException;
 
-    AccommodationViewDTO create(CreateAccommodationDTO accommodation) throws Exception;
+    AccommodationViewDTO create(CreateAccommodationDTO accommodation, Authentication connectedUser) throws Exception;
 
     void update(AccommodationViewDTO accommodation, UpdateAccommodationDTO updateAccommodation) throws Exception;
 
@@ -26,7 +27,7 @@ public interface IAccommodationService {
 
     void delete(Long id);
 
-    ArrayList<AccommodationListingDTO> findOwnersActiveAccommodations(Long ownerId);
+    ArrayList<AccommodationListingDTO> findOwnersActiveAccommodations(String ownerId);
 
     ArrayList<AccommodationListingDTO> findAllUnapprovedAccommodations();
 
@@ -34,7 +35,7 @@ public interface IAccommodationService {
 
     ArrayList<AccommodationListingDTO> search(String startDate, String endDate, String location, int people);
 
-    ArrayList<AccommodationListingDTO> findAllOwnersAccommodations(Long ownerId);
+    ArrayList<AccommodationListingDTO> findAllOwnersAccommodations(String ownerId);
 
 
     void uploadAccommodationPictures(Long accommodationId, MultipartFile image) throws IOException;
@@ -58,7 +59,7 @@ public interface IAccommodationService {
 
     void returnAvailabilitiesForAccommodation(Long accommodationId, String startDate, String endDate);
 
-    ArrayList<AccommodationNameDTO> getAccommodationNames(Long ownerId);
+    ArrayList<AccommodationNameDTO> getAccommodationNames(String ownerId);
 
     Long getAccommodationId(String accName);
 

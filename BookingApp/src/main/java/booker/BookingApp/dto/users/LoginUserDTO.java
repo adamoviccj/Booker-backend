@@ -1,6 +1,6 @@
 package booker.BookingApp.dto.users;
 
-import booker.BookingApp.model.users.User;
+//import booker.BookingApp.model.users.User;
 import booker.BookingApp.validation.PasswordCustomConstraint;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -14,9 +14,9 @@ public @Data class LoginUserDTO {
     public LoginUserDTO() {
     }
 
-    public LoginUserDTO(User user) {
-        this(user.getEmail(), user.getPassword());
-    }
+//    public LoginUserDTO(User user) {
+//        this(user.getEmail(), user.getPassword());
+//    }
 
     public LoginUserDTO(String email, String password) {
         this.email = email;

@@ -17,7 +17,7 @@ public @Data @AllArgsConstructor @NoArgsConstructor class Notification {
     private Long id;
     @Column(name = "user_id", nullable = false)
     @NotNull
-    private Long userId;
+    private String userId;
     @Column(name = "time", nullable = false)
     @NotEmpty
     private String time;

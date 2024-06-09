@@ -3,8 +3,9 @@ package booker.BookingApp.model.requestsAndReservations;
 import booker.BookingApp.enums.ReservationRequestStatus;
 import booker.BookingApp.enums.ReservationStatus;
 import booker.BookingApp.model.accommodation.Accommodation;
-import booker.BookingApp.model.users.Guest;
-import booker.BookingApp.model.users.User;
+//import booker.BookingApp.model.users.Guest;
+import booker.BookingApp.model.base.BaseEntity;
+//import booker.BookingApp.model.users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ public @Data @AllArgsConstructor @NoArgsConstructor class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "guest_id")
-    private Long guestId;
+    private String guestId;
     @ManyToOne
     @JoinColumn(name = "accommodation_id", nullable = false)
     private Accommodation accommodation;

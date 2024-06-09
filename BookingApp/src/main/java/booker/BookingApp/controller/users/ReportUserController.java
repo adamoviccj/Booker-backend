@@ -27,7 +27,7 @@ public class ReportUserController {
     }
 
     @GetMapping(value = "/{userId}")
-    public ResponseEntity<List<UserReport>> getAllReportsForUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity<List<UserReport>> getAllReportsForUser(@PathVariable("userId") String userId) {
         List<UserReport> reports = userReportService.getAllForUser(userId);
         return new ResponseEntity<>(reports, HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class ReportUserController {
     }
 
     @GetMapping(value = "/{userId}/block/{blocked}")
-    public ResponseEntity<Void> blockOrUnblockUser(@PathVariable("userId") Long userId,
+    public ResponseEntity<Void> blockOrUnblockUser(@PathVariable("userId") String userId,
                                                                  @PathVariable("blocked") boolean blocked) {
         userReportService.blockOrUnblock(userId, blocked);
         return new ResponseEntity<>(HttpStatus.OK);

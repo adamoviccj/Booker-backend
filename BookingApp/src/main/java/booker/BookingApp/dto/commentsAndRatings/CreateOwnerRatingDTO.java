@@ -1,14 +1,14 @@
 package booker.BookingApp.dto.commentsAndRatings;
 
 import booker.BookingApp.model.commentsAndRatings.OwnerRating;
-import booker.BookingApp.model.users.Owner;
+//import booker.BookingApp.model.users.Owner;
 import lombok.Data;
 
 import java.util.Date;
 
 public @Data class CreateOwnerRatingDTO {
-    private Long ownerId;
-    private Long guestId;
+    private String ownerId;
+    private String guestId;
     private float rate;
 //    private Date date;
 
@@ -16,10 +16,10 @@ public @Data class CreateOwnerRatingDTO {
     }
 
     public CreateOwnerRatingDTO(OwnerRating ownerRating) {
-        this(ownerRating.getOwner().getId(), ownerRating.getGuest().getId(), ownerRating.getRate());
+        this(ownerRating.getOwnerId(), ownerRating.getGuestId(), ownerRating.getRate());
     }
 
-    public CreateOwnerRatingDTO(Long ownerId, Long guestId, float rate) {
+    public CreateOwnerRatingDTO(String ownerId, String guestId, float rate) {
         this.ownerId = ownerId;
         this.guestId = guestId;
         this.rate = rate;

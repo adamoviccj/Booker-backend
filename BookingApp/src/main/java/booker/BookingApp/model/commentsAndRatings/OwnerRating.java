@@ -1,25 +1,38 @@
 package booker.BookingApp.model.commentsAndRatings;
 
-import booker.BookingApp.model.users.Owner;
-import booker.BookingApp.model.users.User;
+import booker.BookingApp.model.base.BaseEntity;
+//import booker.BookingApp.model.users.Owner;
+//import booker.BookingApp.model.users.Owner;
+//import booker.BookingApp.model.users.User;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
-
+@Getter
+@Setter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public @Data class OwnerRating {
+public class OwnerRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "owner")
+//    private Owner owner;
+//
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "guest")
+//    private User guest;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "guest_id")
-    private User guest;
+    @Column(name = "owner_id")
+    private String ownerId;
+
+    @Column(name = "guest_id")
+    private String guestId;
 
     @Column(name = "rate", nullable = false)
     private float rate;

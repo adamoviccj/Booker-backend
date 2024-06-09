@@ -16,19 +16,19 @@ public interface IReservationRequestService {
 
     ReservationRequestDTO findOne(Long id);
 
-    ArrayList<ReservationRequestDTO> findOwnersRequests(Long ownerId);
+    ArrayList<ReservationRequestDTO> findOwnersRequests(String ownerId);
 
     ArrayList<ReservationRequestDTO> findAccommodationRequests(Long accommodationId);
 
-    ArrayList<ReservationRequestDTO> search(Long guestId, String dateString, String name) throws IOException;
+    ArrayList<ReservationRequestDTO> search(String guestId, String dateString, String name) throws IOException;
 
-    ArrayList<ReservationRequestDTO> searchForOwner(Long ownerId, String dateString, String name) throws IOException;
+    ArrayList<ReservationRequestDTO> searchForOwner(String ownerId, String dateString, String name) throws IOException;
 
     ArrayList<ReservationRequestDTO> applyFilters(ArrayList<ReservationRequestDTO> requests, ArrayList<ReservationRequestStatus> adequateTypes);
 
-    ArrayList<ReservationRequestDTO> findGuestsRequests(Long guestId);
+    ArrayList<ReservationRequestDTO> findGuestsRequests(String guestId);
 
-    void cancelRequest(Long userId, Long requestId);
+    void cancelRequest(String userId, Long requestId);
 
     boolean acceptOrDecline(boolean accept, ReservationRequestDTO reservationRequestDTO);
 

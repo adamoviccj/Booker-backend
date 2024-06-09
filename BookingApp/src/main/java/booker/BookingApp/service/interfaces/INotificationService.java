@@ -8,9 +8,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public interface INotificationService {
-    ArrayList<NotificationDTO> findAllForUser(Long userId);
+    ArrayList<NotificationDTO> findAllForUser(String userId);
 
     void save(Notification notification);
 
-    NotificationDTO findNewForUser(Long userId) throws ParseException;
+    NotificationDTO findNewForUser(String userId) throws ParseException;
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 
 public @Data class CreateAccommodationRatingDTO {
     private Long accommodationId;
-    private Long guestId;
+    private String guestId;
     private float rate;
     private Date date;
 
@@ -15,10 +15,10 @@ public @Data class CreateAccommodationRatingDTO {
     }
 
     public CreateAccommodationRatingDTO(AccommodationRating rating) {
-        this(rating.getAccommodation().getId(), rating.getGuest().getId(), rating.getRate(), rating.getDate());
+        this(rating.getAccommodation().getId(), rating.getGuestId(), rating.getRate(), rating.getDate());
     }
 
-    public CreateAccommodationRatingDTO(Long accommodationId, Long guestId, float rate, Date date) {
+    public CreateAccommodationRatingDTO(Long accommodationId, String guestId, float rate, Date date) {
         this.accommodationId = accommodationId;
         this.guestId = guestId;
         this.rate = rate;

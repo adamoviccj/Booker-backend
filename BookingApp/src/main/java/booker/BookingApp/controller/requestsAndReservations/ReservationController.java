@@ -37,7 +37,7 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/guest/{guestId}")
-    public ResponseEntity<ArrayList<ReservationDTO>> getAllForGuest(@PathVariable Long guestId) {
+    public ResponseEntity<ArrayList<ReservationDTO>> getAllForGuest(@PathVariable String guestId) {
         ArrayList<ReservationDTO> reservations = reservationService.getAllForGuest(guestId);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
@@ -73,7 +73,7 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/guest/{guestId}/future/approved")
-    public ResponseEntity<ArrayList<ReservationDTO>> getAllFutureForGuest(@PathVariable Long guestId) {
+    public ResponseEntity<ArrayList<ReservationDTO>> getAllFutureForGuest(@PathVariable String guestId) {
         ArrayList<ReservationDTO> reservations = reservationService.getAllFutureForGuest(guestId);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
